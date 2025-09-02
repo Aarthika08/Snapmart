@@ -1,0 +1,131 @@
+<!-- <div class="profile-section">
+  <h2>Profile</h2>
+  
+  <div>
+    <img *ngIf="profile?.profile_picture" 
+         [src]="'http://localhost:5001' + profile.profile_picture" 
+         alt="Profile Picture" width="100">
+    <p *ngIf="!profile?.profile_picture">No profile picture yet</p>
+  </div>
+
+  <p>Name: {{ profile?.name }}</p>
+  <p>Email: {{ profile?.email }}</p>
+
+  <h3>Update Profile Picture</h3>
+  <input type="file" (change)="onFileSelected($event)" />
+  <button (click)="uploadProfilePic()">Upload</button>
+</div> -->
+
+
+  <!-- Delete Account -->
+  <!-- <button (click)="deleteProfile()" style="color: red; margin-top: 10px;">
+    Delete Account
+  </button> -->
+
+  <p>profilepage works!</p>
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo"></div>
+      <span class="brand-name">Snapmart</span> <!-- change to Instamart/Nala Mart -->
+    </div>
+  
+    <div class="search">
+      <input type="search" placeholder="Search" />
+    </div>
+  
+    <nav class="nav">
+      <a>Find Products</a>
+      <a>Messages</a>
+      <a class="me">My Profile</a>
+      <div class="avatar">
+        <img [src]="serverUrl + profile.profile_picture" [alt]="profile.name" />
+        <span class="status"></span>
+      </div>
+      <button (click)="logout()">Logout</button>
+
+    </nav>
+  </header>
+  
+  <main class="container">
+    <!-- Left column -->
+    <aside class="left">
+      <div class="photo">
+        <img [src]="serverUrl + profile.profile_picture" [alt]="profile.name" />
+      </div>
+  
+      <section class="block">
+        <h4>NAME</h4>
+        <div class="name">{{ profile.name }}</div>
+        <div class="addr">
+          {{ profile.address }}, {{ profile.city }}, {{ profile.state }} {{ profile.postal_code }}
+        </div>
+      </section>
+  
+      <section class="block">
+        <h4>BIO</h4>
+        <div class="bio">{{ profile.bio }}</div>
+      </section>
+  
+      <section class="block">
+        <h4>Contacts</h4>
+        <div class="about">
+          <div><strong>Email:</strong> {{ profile.email }}</div>
+          <div><strong>Website:</strong> 
+            <a [href]="profile.website" target="_blank">{{ profile.website }}</a>
+          </div>
+        </div>
+      </section>
+    </aside>
+  
+    <!-- Right column -->
+    <section class="right">
+      <div class="heading">
+        <h1>{{ profile.name }}</h1>
+        <div class="role">{{ profile.role }}</div>
+  
+        <div class="actions">
+          <button class="ghost">Send message</button>
+<button class="primary" [routerLink]="['/profile']">Edit</button>
+
+        </div>
+      </div>
+  
+      <hr />
+  <div class="tabs">
+    <button 
+      class="tab" 
+      [class.active]="activeTab==='timeline'"
+      (click)="switchTab('timeline')">
+      Timeline
+    </button>
+    <button 
+      class="tab" 
+      [class.active]="activeTab==='about'"
+      (click)="switchTab('about')">
+      About
+    </button>
+  </div>
+  <hr />
+  
+  <!-- Show Timeline only if active -->
+  <section class="timeline" *ngIf="activeTab==='timeline'">
+    <div class="row">
+      <div class="label">User created</div>
+      <div class="value">
+        {{ toDate(profile.created_at) | date:'MMMM d, y, h:mm a' }}
+      </div>
+    </div>
+  </section>
+  
+  <!-- Show About only if active -->
+  <section class="about-grid" *ngIf="activeTab==='about'">
+    <div class="row"><div class="label">Name:</div><div class="value">{{ profile.name }}</div></div>
+    <div class="row"><div class="label">Address:</div><div class="value">{{ profile.address }}, {{ profile.city }}, {{ profile.state }} {{ profile.postal_code }}</div></div>
+    <div class="row"><div class="label">Phone:</div><div class="value">{{ profile.phone }}</div></div>
+    <div class="row"><div class="label">Bio:</div><div class="value">{{ profile.bio }}</div></div>
+  </section>
+  
+    </section>
+  </main>
+  

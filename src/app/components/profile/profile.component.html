@@ -1,0 +1,42 @@
+
+<div class="profile-container" *ngIf="profile">
+  <div class="profile-card">
+    <div class="profile-pic">
+      <img *ngIf="profile.profile_picture; else placeholder"
+           [src]="serverUrl + profile.profile_picture" alt="Profile Picture">
+      <ng-template #placeholder>
+        <div class="placeholder">No Image</div>
+      </ng-template>
+    </div>
+
+    <div class="profile-info">
+      <label>Name:</label>
+      <input [(ngModel)]="profile.name" type="text">
+      <label>Address:</label>
+      <input [(ngModel)]="profile.address" type="text">
+      <label>phone:</label>
+      <input [(ngModel)]="profile.phone" type="text">
+      
+      <label>bio:</label>
+      <input [(ngModel)]="profile.bio" type="text">
+
+
+
+     
+      <label>Email:</label>
+      <input [value]="profile.email" type="email" disabled>
+
+      <div class="buttons">
+        <button (click)="updateProfile()">Save Changes</button>
+      </div>
+     
+      <div class="upload-section">
+        <input type="file"  id ="fileInput" (change)="onFileSelected($event)">
+        <button (click)="updateProfilePic()">Update Picture</button>
+        <button class="danger" (click)="deleteProfilePic()"  style="color: red;">Delete Picture</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
