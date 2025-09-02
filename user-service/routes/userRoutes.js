@@ -4,7 +4,7 @@ const { getProfile } = require('../config/profileController');
 const authenticate = require('../middleware/authMiddleware');
 
 // Get profile (protected)
-router.get('/profilepage', authenticate, getProfile);
+router.get('/profile', authenticate, getProfile);
 
 
 module.exports = router;

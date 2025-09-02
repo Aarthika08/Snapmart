@@ -205,60 +205,6 @@ app.put('/api/profile/pic', authMiddleware, upload.single('profile_picture'), as
   }
 });
 
-const fs = require('fs');
-
-app.put('/api/profile/pic', authMiddleware, upload.single('profile_picture'), async (req, res) => {
-  try {
-    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-
-    const newProfilePic = `/uploads/${req.file.filename}`;
-
-    // Step 1: Get current profile picture path
-    const result = await pool.query(
-      'SELECT profile_picture FROM users WHERE id = $1',
-      [req.user.id]
-    );
-
-    const currentPic = result.rows[0]?.profile_picture;
-
-    // Step 2: Delete old picture file if it exists
-    if (currentPic) {
-      const oldPath = path.join(__dirname, currentPic);
-      fs.unlink(oldPath, (err) => {
-        if (err) {
-          console.warn('⚠️ Could not delete old profile picture:', err.message);
-        } else {
-          console.log('🗑️ Old profile picture deleted:', currentPic);
-        }
-      });
-    }
-
-    // Step 3: Update database with new picture path
-    await pool.query(
-      'UPDATE users SET profile_picture = $1 WHERE id = $2',
-      [newProfilePic, req.user.id]
-    );
-
-    res.json({ message: 'Profile picture updated!', profile_picture: newProfilePic });
-    
-  } catch (err) {
-    console.error('❌ Error updating profile picture:', err);
-    res.status(500).json({ error: 'Server error' });
-  }
-});
-
-// app.delete('/api/profile/pic', authMiddleware, async (req, res) => {
-//   try {
-//     await pool.query(
-//       'UPDATE users SET profile_picture = NULL WHERE id = $1',
-//       [req.user.id]
-//     );
-//     res.json({ message: 'Profile picture deleted' });
-//   } catch (err) {
-//     console.error('Error deleting profile picture:', err);
-//     res.status(500).json({ error: 'Server error' });
-//   }
-// });
 
 
 
@@ -274,7 +220,63 @@ app.put('/api/profile/pic', authMiddleware, upload.single('profile_picture'), as
 // });
 
 
+// Soft delete profile picture
+// app.delete('/api/profile/pic', authMiddleware, async (req, res) => {
+//   try {
+//     // 1️⃣ Check if user has a profile picture
+//     const result = await pool.query(
+//       'SELECT profile_picture FROM users WHERE id = $1',
+//       [req.user.id]
+//     );
+//     const currentPic = result.rows[0]?.profile_picture;
 
+//     if (!currentPic) return res.status(400).json({ message: 'No profile picture to delete' });
+
+//     // 2️⃣ Soft delete: set profile_picture to NULL in DB
+//     await pool.query(
+//       'UPDATE users SET profile_picture = NULL WHERE id = $1',
+//       [req.user.id]
+//     );
+
+//     res.json({ message: 'Profile picture deleted (soft delete)' });
+//   } catch (err) {
+//     console.error('❌ Error soft deleting profile picture:', err);
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// });
+
+const fs = require('fs');
+// Hard delete profile picture
+app.delete('/api/profile/pic', authMiddleware, async (req, res) => {
+  try {
+    // 1️⃣ Get current profile picture path
+    const result = await pool.query(
+      'SELECT profile_picture FROM users WHERE id = $1',
+      [req.user.id]
+    );
+    const currentPic = result.rows[0]?.profile_picture;
+
+    if (!currentPic) return res.status(400).json({ message: 'No profile picture to delete' });
+
+    // 2️⃣ Delete the file from uploads folder
+    const filePath = path.join(__dirname, currentPic); // make sure path is correct
+    fs.unlink(filePath, (err) => {
+      if (err) console.warn('⚠️ Could not delete file:', err.message);
+      else console.log('🗑️ Profile picture deleted from server:', currentPic);
+    });
+
+    // 3️⃣ Update DB
+    await pool.query(
+      'UPDATE users SET profile_picture = NULL WHERE id = $1',
+      [req.user.id]
+    );
+
+    res.json({ message: 'Profile picture deleted (hard delete)' });
+  } catch (err) {
+    console.error('❌ Error hard deleting profile picture:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 
 // ====================== DB Test ======================

@@ -38,9 +38,9 @@ router.get("/", authMiddleware, async (req, res) => {
 // PUT /api/profile
 router.put("/", authMiddleware, async (req, res) => {
   try {
-    const { name, phone,address,bio } = req.body;
+    const { name,phone,address,bio } = req.body;
     await User.update(
-      { name, phone,address,bio },
+      { name,phone,address,bio },
       { where: { id: req.user.id } }
     );
     res.json({ message: "Profile updated successfully" });
@@ -67,16 +67,26 @@ router.post("/pic", authMiddleware, upload.single("profile_picture"), async (req
 });
 
 
-// //profilepage
-// router.get('/api/profilepage', async (req, res) => {
-//   try {
-//     const result = await db.query('SELECT id, name, email, profile_picture, role ,city,state,postal_code,phone,website,bio FROM users WHERE id = $1', [1]); 
-//     res.json(result.rows[0]);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: 'Failed to fetch profile' });
-//   }
-// });
+router.delete("/pic", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user.profile_picture) return res.status(400).json({ message: "No profile picture to delete" });
+
+    const filePath = path.join(__dirname, "../uploads/profile_pics", path.basename(user.profile_picture));
+    fs.unlink(filePath, (err) => {
+      if (err) console.warn("⚠️ Could not delete file:", err.message);
+      else console.log("🗑️ Profile picture deleted:", user.profile_picture);
+    });
+
+    await User.update({ profile_picture: null }, { where: { id: req.user.id } });
+
+    res.json({ message: "Profile picture deleted" });
+  } catch (error) {
+    console.error("❌ Error deleting profile picture:", error);
+    res.status(500).json({ message: "Server error", details: error.message });
+  }
+});
 
 
 
