@@ -1,0 +1,96 @@
+<!-- Navbar -->
+<header class="navbar">
+  <div class="navbar-inner">
+<div class="logo">
+    <img src="assets/Mini.png" alt="MiniShop Logo" />
+  </div>
+    <div class="search-bar" role="search">
+      <input
+        type="search"
+        placeholder="Search products..."
+        aria-label="Search products"
+        (keyup.enter)="onSearch($event.target.value)"/>
+      <button (click)="onSearch(searchInput?.value)">Search</button>
+    </div>
+
+    <div class="cart" aria-live="polite">
+      <span class="material-icons" aria-hidden="true">shopping_cart</span>
+      <span class="count">{{ cartCount || 0 }}</span>
+    </div>
+  </div>
+</header>
+
+<section class="carousel">
+  <div
+    class="carousel-container"
+    [style.backgroundImage]="'url(' + banners[activeSlide].image + ')'"
+  >
+    <div class="carousel-text">
+      <h2>{{ banners[activeSlide].title }}</h2>
+      <p>{{ banners[activeSlide].subtitle }}</p>
+      <button class="shop-btn">Shop Now</button>
+    </div>
+
+    <button class="prev" (click)="prevSlide()">&#10094;</button>
+    <button class="next" (click)="nextSlide()">&#10095;</button>
+  </div>
+</section>
+
+<!-- Categories -->
+<section class="categories">
+  <h2>Shop by Category</h2>
+  <div class="category-grid">
+    <button
+      class="category-card"
+      *ngFor="let cat of categories"
+      (click)="filterByCategory(cat.name)"
+      aria-label="{{ cat.name }}"
+    >
+      <div class="cat-img-wrap">
+        <img [src]="cat.image" [alt]="cat.name" />
+      </div>
+      <p>{{ cat.name }}</p>
+    </button>
+  </div>
+</section>
+
+<!-- Hero small (optional) -->
+<section class="hero small-hero">
+  <div class="hero-content">
+    <h1>Shop Your Favorites</h1>
+    <p>Trendy collections at the best price</p>
+    <button class="shop-btn" (click)="navigateTo('/products')">Shop Now</button>
+  </div>
+</section>
+
+<!-- Featured Products -->
+<section class="products">
+  <h2>Featured Products</h2>
+  <div class="product-grid">
+    <div class="product-card" *ngFor="let product of products">
+      <div class="product-media">
+        <img [src]="product.image" [alt]="product.name" />
+      </div>
+      <div class="product-body">
+        <h3>{{ product.name }}</h3>
+        <p class="price">₹{{ product.price }}</p>
+        <div class="product-actions">
+          <button (click)="addToCart(product)">Add to Cart</button>
+          <button class="outline" (click)="viewProduct(product)">View</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <p>© 2025 MiniShop. All rights reserved.</p>
+    <nav aria-label="footer">
+      <a (click)="navigateTo('/about')">About</a>
+      <a (click)="navigateTo('/contact')">Contact</a>
+      <a (click)="navigateTo('/terms')">Terms</a>
+    </nav>
+  </div>
+</footer>

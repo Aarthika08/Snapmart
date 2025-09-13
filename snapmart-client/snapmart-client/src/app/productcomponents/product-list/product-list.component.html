@@ -1,0 +1,72 @@
+<mat-toolbar color="primary" class="navbar">
+  <div class="logo">
+    <img src="assets/logo.png" alt="SnapMart Logo" height="40" />
+    <span class="company-name">SnapMart</span>
+  </div>
+
+  <div class="search">
+    <mat-form-field appearance="outline">
+      <mat-label>Search Products</mat-label>
+      <input matInput placeholder="Search..." [(ngModel)]="searchQuery" />
+    </mat-form-field>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="profile">
+    <img src="assets/profile.png" alt="Profile" height="35" class="profile-img" />
+  </div>
+</mat-toolbar>
+
+<div class="categories">
+  <button mat-raised-button (click)="filterCategory('All')">All</button>
+  <button mat-raised-button (click)="filterCategory('Electronics')">Electronics</button>
+  <button mat-raised-button (click)="filterCategory('Veggies')">Veggies</button>
+  <button mat-raised-button (click)="filterCategory('beauty')">Beauty</button>
+  <button mat-raised-button (click)="filterCategory('fashion')">Fashion</button>
+</div>
+
+
+<div class="product-grid">
+  <mat-card *ngFor="let product of filteredProducts" class="product-card">
+    <img mat-card-image [src]="product.imageUrl" alt="{{ product.name }}">
+    <mat-card-content>
+      <h3>{{ product.name }}</h3>
+      <p class="price">₹ {{ product.price }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="addToCart(product)">
+        Add to Cart
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+
+
+
+<p>product-list works!</p>
+<div class="products">
+  <h2>Available Products</h2>
+
+  <div *ngIf="products.length === 0">
+    <p>No products available</p>
+  </div>
+
+
+
+<div class="product-grid">
+  <mat-card *ngFor="let product of products" class="product-card">
+    <img mat-card-image [src]="product.imageUrl" alt="{{ product.name }}">
+    <mat-card-content>
+      <h3>{{ product.name }}</h3>
+      <p class="price">₹ {{ product.price }}</p>
+      <p class="category">{{ product.category }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="addToCart(product)" [disabled]="product.stock === 0">
+        Add to Cart
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
