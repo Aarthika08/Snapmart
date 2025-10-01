@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class ProductList  implements OnInit {
   searchQuery: string = '';
 
 
-  constructor(private productService: ProductService,private cartService: CartService) {}
+  constructor(private productService: ProductService,private cartService: CartService,private router: Router) {}
 
   ngOnInit(): void {
     this.productService.getProducts().subscribe({
@@ -36,9 +37,24 @@ export class ProductList  implements OnInit {
     });
   }
 
-  addToCart(product: Product) {
-    const message = this.cartService.addToCart(product);
-    alert(message);
+  // addToCart(product: Product) {
+  //   const message = this.cartService.addToCart(product);
+  //   alert(message);
+  // }
+
+  addToCart(product: Product, qty: number = 1) {
+  if (product._id) {
+  this.cartService.addToCart(product._id, qty).subscribe({
+    next: (res) => {
+      console.log('Cart updated:', res);
+               this.router.navigate(['/cart']);
+      
+    },
+    error: (err) => console.error(err)
+  });
+} else {
+  console.error('Product ID is missing, cannot add to cart.');
+}
   }
 
 filterCategory(category: string) {

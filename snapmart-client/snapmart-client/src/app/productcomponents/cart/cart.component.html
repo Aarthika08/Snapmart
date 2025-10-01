@@ -1,0 +1,140 @@
+ <!-- <h2>🛒 Your Cart</h2>
+
+ <mat-toolbar color="primary">
+  <button mat-icon-button routerLink="/">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <span>My Cart ({{ totalItems() }})</span>
+</mat-toolbar>
+
+<div *ngIf="loading" class="loading">Loading...</div>
+
+<div *ngIf="!loading && cartItems.length === 0" class="empty">
+  <p>Your cart is empty.</p>
+  <button mat-raised-button color="primary" routerLink="/">Continue Shopping</button>
+</div>
+
+<div *ngIf="!loading && cartItems.length > 0">
+  <mat-card *ngFor="let item of cartItems" class="cart-item">
+    <mat-card-content>
+      <h3>{{ item.name || item.productId }}</h3>
+
+      <p>Qty: {{ item.qty }} {{ item.unit }}</p>
+      <p>Price: {{ item.price | currency }}</p>
+      <p>Total: {{ (item.price || 0) * item.qty | currency }}</p>
+
+      <div class="qty-controls">
+        <button mat-mini-fab color="primary" (click)="decreaseQty(item)" [disabled]="item.qty <= 1">-</button>
+        <span class="qty">{{ item.qty }}</span>
+        <button mat-mini-fab color="primary" (click)="increaseQty(item)" [disabled]="item.qty >= item.remainingStock">+</button>
+        <button mat-button color="warn" (click)="removeItem(item)">Remove</button>
+     
+
+
+    
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+</div>
+
+    <div class="cart-summary" *ngIf="cartItems.length > 0">
+  <p>Total Items: {{ totalItems() }}</p>
+  <p>Grand Total: {{ totalPrice() | currency }}</p>
+  
+</div> -->
+
+
+<!-- 2nd one -->
+
+<!-- cart.component.html -->
+<div class="cart-page">
+
+  <!-- Left: Cart Items -->
+  <section class="cart-items">
+    <h1 class="page-title">Shopping Cart</h1>
+    <div class="cart-note">You have <strong>{{ cartItems.length || 0 }}</strong> item(s) in your cart.</div>
+
+    <div *ngIf="cartItems.length === 0" class="empty">
+      <p>Your cart is empty.</p>
+    </div>
+
+    <ul class="items-list">
+      <li *ngFor="let item of cartItems" class="item-card">
+        <div class="item-image">
+          <img [src]="item.imageUrl" alt="{{ item.name }}" class="item-img"> </div>
+
+        <div class="item-main">
+          <div class="title-row">
+            <h2 class="item-title">{{ item.name }}</h2>
+              <div class="item-price">{{ (item.price || 0) * item.qty | currency }}</div>
+
+          </div>
+
+          <div class="item-meta">
+            <div class="seller">Sold by <span>{{ item.seller || 'MiniMart' }}</span></div>
+            <!-- <div class="availability">{{ item.available ? 'In stock' : 'Out of stock' }}</div> -->
+            <div class="availability"> <p [ngClass]="{'in-stock': item.remainingStock > 0, 'out-of-stock': item.remainingStock === 0}">
+      {{ item.remainingStock > 0 ? 'In  Stock' : 'Out of Stock' }}   </p>  
+    </div>
+    </div>
+
+          <div class="controls-row">
+            <div class="qty-group" role="group" aria-label="Quantity">
+              <button class="qty-btn" (click)="decreaseQty(item)" [disabled]="item.qty <= 1">−</button>
+              <input class="qty-input" type="number" min="1" [value]="item.qty" (change)="updateQuantityFromInput($event, item)">
+              <button class="qty-btn" (click)="increaseQty(item)">+</button>
+            </div>
+
+            <button class="link-btn" (click)="moveToWishlist(item)">Save for later</button>
+            <button class="link-btn" (click)="removeItem(item)">Remove</button>
+          </div>
+
+          <div class="item-subtotal">
+            Subtotal: <strong>{{ (item.price * item.qty) | currency }}</strong>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Right: Order Summary -->
+  <aside class="order-summary" aria-labelledby="summary-heading">
+    <div class="summary-card">
+      <h2 id="summary-heading">Order Summary</h2>
+
+      <div class="summary-row">
+        <span>Items ({{ cartItems.length || 0 }})</span>
+        <span>{{ totalItems() }}</span>
+      </div>
+
+      <div class="summary-row">
+        <span>Subtotal</span>
+        <span class="summary-amount">{{ totalPrice() | currency }}</span>
+      </div>
+
+      <div class="promo">
+        <input type="text" placeholder="Gift card or promo code" #promoInput>
+        <button class="apply-btn" (click)="applyPromo(promoInput.value)">Apply</button>
+      </div>
+
+      <div class="summary-divider"></div>
+
+      <div class="summary-row total">
+        <span>Order Total</span>
+        <span class="summary-amount big">{{ totalPrice() | currency }}</span>
+      </div>
+
+      <button class="checkout-btn" [disabled]="cartItems.length === 0" (click)="checkout()">
+        Proceed to Checkout
+      </button>
+
+      <div class="secure">
+        <svg class="lock" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a4 4 0 0 0-4 4v3H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V5a4 4 0 0 0-4-4zM9 8V5a3 3 0 0 1 6 0v3H9z"/></svg>
+        <span>Secure transaction</span>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!--  Incoming login data: { email: 'testing12@gmail.com', password: 'testing123' } -->

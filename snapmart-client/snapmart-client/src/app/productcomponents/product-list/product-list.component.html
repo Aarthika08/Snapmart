@@ -35,9 +35,11 @@
       <p class="price">₹ {{ product.price }}</p>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="addToCart(product)">
-        Add to Cart
-      </button>
+      <input #qtyInput type="number" min="1" value="1">
+<button mat-raised-button color="primary" (click)="addToCart(product, qtyInput.valueAsNumber)">
+  Add to Cart
+</button>
+
     </mat-card-actions>
   </mat-card>
 </div>
