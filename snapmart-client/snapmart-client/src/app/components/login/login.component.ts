@@ -17,13 +17,9 @@ export class LoginComponent {
   email = '';
   password = '';
   message = '';
-  // router: any;
+  
 
   constructor(private http: HttpClient, private router: Router) {}
-
-
-  // constructor(private authService: AuthService) {}
-
   login() {
     interface LoginResponse {
   message: string;

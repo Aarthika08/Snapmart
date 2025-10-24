@@ -1,0 +1,20 @@
+<div class="success-card" *ngIf="!loading">
+  <div *ngIf="order">
+    <div class="tick">✔️</div>
+    <h2>Payment Successful</h2>
+    <p>Order ID: <strong>{{ order.razorpayOrderId || order._id }}</strong></p>
+
+    <div class="summary-card">
+      <div>Amount Paid: <strong>₹{{ order.totalAmount }}</strong></div>
+      <div>Status: <strong>{{ order.status }}</strong></div>
+      <div>Date: <strong>{{ order.createdAt | date:'medium' }}</strong></div>
+    </div>
+
+    <button (click)="goOrders()" class="btn-outline">View My Orders</button>
+    <button (click)="router.navigateByUrl('/')" class="btn-primary">Continue Shopping</button>
+  </div>
+
+  <div *ngIf="!order">
+    <p>Order details not found.</p>
+  </div>
+</div>

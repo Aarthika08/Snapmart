@@ -23,7 +23,7 @@ export class CartComponent implements OnInit {
  cartItems: CartItem[] = [];
   loading = false;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService,public router:Router) {}
 
   ngOnInit(): void {
     this.loadCart();
@@ -102,6 +102,7 @@ totalPrice(): number {
 
   checkout() {
     alert('Proceeding to checkout...');
+    this.router.navigate(['/checkout']);
   }
 
 }

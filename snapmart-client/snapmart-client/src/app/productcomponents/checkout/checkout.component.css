@@ -1,0 +1,32 @@
+.checkout-card {
+  max-width: 720px;
+  margin: 32px auto;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(20,20,40,0.06);
+  background: #fff;
+}
+.summary .item-row { display:flex; justify-content:space-between; padding:8px 0; }
+.total { text-align:right; margin-top:8px; }
+.payment-details label { display:block; margin:12px 0; }
+.payment-details input { width:100%; padding:10px; border-radius:8px; border:1px solid #e6e6e6; }
+.pay-btn {
+  width:100%;
+  margin-top:12px;
+  padding:12px;
+  border-radius:10px;
+  background:#2b6ef6;
+  color:#fff;
+  font-weight:600;
+  border:none;
+  cursor:pointer;
+}
+
+/* Fix any auto width SVG in this component */
+.checkout-card svg {
+  width: 100% !important;   /* give a valid width */
+  height: auto !important;  /* maintain aspect ratio */
+}
+
+.pay-btn[disabled] { opacity:0.7; cursor:not-allowed; }
+.error { color:#b00020; margin-top:12px; }

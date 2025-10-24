@@ -9,12 +9,16 @@ import { authGuard } from './auth/auth.guard';
 import {ProductList} from '../app/productcomponents/product-list/product-list.component';
 import {HomepageComponent} from './homepage/homepage.component';
 import {CartComponent} from './productcomponents/cart/cart.components';
+import {CheckoutComponent } from './productcomponents/checkout/checkout.component';
+import {OrderSuccessComponent } from './productcomponents/order-success/order-success.component';
 export const routes: Routes = [
 {path:'home',component:HomepageComponent},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
    {path:'product',component:ProductList},
    {path:'cart',component:CartComponent},
+   { path: 'checkout', component: CheckoutComponent },
+  { path: 'payment-success/:id', component: OrderSuccessComponent },
   {path:'profile',component:ProfileComponent,canActivate: [authGuard] },
 {path:'profilepage',component:ProfilePageComponent,canActivate: [authGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' },

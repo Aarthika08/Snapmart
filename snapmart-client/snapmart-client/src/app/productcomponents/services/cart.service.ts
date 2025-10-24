@@ -1,60 +1,10 @@
-// import { Injectable } from '@angular/core';
-// import { BehaviorSubject } from 'rxjs';
-// import { Product } from './product.service';
-
-// export interface CartItem {
-//   product: Product;
-//   quantity: number;
-// }
-
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class CartService {
-//   private cart: CartItem[] = [];
-//   private cartSubject = new BehaviorSubject<CartItem[]>([]);
-
-//   cart$ = this.cartSubject.asObservable();
-
-//   addToCart(product: Product): string {
-//     if (product.stock <= 0) {
-//       return 'Out of stock!';
-//     }
-
-//     const item = this.cart.find(i => i.product._id === product._id);
-
-//     if (item) {
-//       if (item.quantity < product.stock) {
-//         item.quantity++;
-//       } else {
-//         return 'No more stock available!';
-//       }
-//     } else {
-//       this.cart.push({ product, quantity: 1 });
-//     }
-
-//     this.cartSubject.next(this.cart);
-//     return 'Added to cart!';
-//   }
-
-//   removeFromCart(productId: string) {
-//     this.cart = this.cart.filter(i => i.product._id !== productId);
-//     this.cartSubject.next(this.cart);
-//   }
-
-//   getCartItems(): CartItem[] {
-//     return this.cart;
-//   }
-
-//   clearCart() {
-//     this.cart = [];
-//     this.cartSubject.next(this.cart);
-//   }
-// }
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
 
 // Cart item interface (matches backend response)
 export interface CartItem {
@@ -72,11 +22,23 @@ export interface CartItem {
   
 }
 
+// Order interface
+export interface Order {
+  id: string;
+  items: CartItem[];
+  total: number;
+  userId: string;
+  date: Date;
+  paymentStatus: string;
+}
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
   private apiUrl = 'http://localhost:5000/cart'; // your working backend route
+ private cartItems = new BehaviorSubject<any[]>(this.getCartFromStorage());
+  cartItems$ = this.cartItems.asObservable();
+  private orders: Order[] = [];
 
   constructor(private http: HttpClient) {}
 
@@ -98,5 +60,65 @@ export class CartService {
   // Remove product from cart
   removeCartItem(productId: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${productId}`);
+  }
+
+
+    
+
+  
+  getTotal(): number {
+    return this.cartItems.value.reduce((sum, item) => sum + item.price * item.qty, 0);
+  }
+
+  getItems(): CartItem[] {
+    return this.cartItems.value;
+  }
+
+  // 🔹 Local storage helpers
+  private getCartFromStorage(): CartItem[] {
+    return JSON.parse(localStorage.getItem('cart') || '[]');
+  }
+
+  private saveCartToStorage(cart: CartItem[]) {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+
+  private refreshCart() {
+    this.fetchCart().subscribe();
+  }
+ // 🔹 Fetch cart from backend and update local + storage
+  // fetchCart(): Observable<CartItem[]> {
+  //   return this.http.get<CartItem[]>(this.apiUrl).pipe(
+  //     tap(items => {
+  //       this.cartItems.next(items);
+  //       this.saveCartToStorage(items);
+  //     })
+  //   );
+  // }
+fetchCart(): Observable<CartItem[]> {
+  return this.http.get<CartItem[]>(this.apiUrl).pipe(
+    tap(items => {
+      this.cartItems.next(items);
+      localStorage.setItem('cart', JSON.stringify(items));
+    })
+  );
+}
+
+
+  
+
+  // --- New: Order methods ---
+  getOrders(): Order[] {
+    return this.orders;
+  }
+
+  addOrder(order: Order) {
+    this.orders.push(order);
+  }
+
+  clearCart() {
+    this.cartItems.next([]);
+    localStorage.removeItem('cart');
+    
   }
 }

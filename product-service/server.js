@@ -10,17 +10,20 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const productRoutes = require('./routes/productRoutes');
 // const cartRoutes = require('./routes/cartRoutes');
+const paymentRoutes = require("./routes/paymentRoutes");
+
+const bodyParser = require("body-parser");
 
 
 const app = express();
-
 app.use(express.json());
 // Middlewares
 app.use(cors());
+app.use(bodyParser.json());
 
 // ❌ DO NOT use express.json() before multer for form-data routes
 // (but it's fine to keep for JSON-only routes)
-app.use(express.json());
+// app.use(express.json());
 
 // Routes
 app.use('/products', productRoutes);
@@ -33,7 +36,6 @@ mongoose.connect(process.env.MONGO_URI, {
 })
 .then(() => {
   console.log('✅ MongoDB Connected');
-  app.listen(5000, () => console.log('🚀 Server running on port 5000'));
 })
 .catch(err => console.error('❌ MongoDB Connection Failed:', err));
 
@@ -126,16 +128,11 @@ app.delete('/cart/:productId', async (req, res) => {
 
 
 
-// const cartItems = await Cart.find().populate('productId'); // populate product data
-// const result = cartItems.map(ci => ({
-//   productId: ci.productId._id,
-//   name: ci.productId.name,      // added
-//   price: ci.productId.price,    // added
-//   remainingStock: ci.productId.stock,
-//   unit: ci.productId.unit,
-//   qty: ci.qty
-// }));
-// res.json(result);
 
+// Import payment routes
+
+// const paymentRoutes = require("./routes/payment.routes");
+app.use("/api/payment", paymentRoutes);
 // -----------------------
-app.listen(5000, () => console.log('Server running on http://localhost:5000'));
+console.log("payment order asucessful ");
+app.listen(5000, () => console.log('Server payment running on http://localhost:5000'));

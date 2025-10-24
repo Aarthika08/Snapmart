@@ -41,13 +41,7 @@ import { RouterOutlet } from '@angular/router';
 import { ProfileService } from './components/profilepage/profile.service';
 import { CommonModule } from '@angular/common';
 
-// @Component({
-//   selector: 'app-root',
-//   standalone: true,
-//   imports: [RouterOutlet,RouterModule],
-//   template: `<router-outlet></router-outlet>`
-// })
-// export class AppComponent {}
+
 
 
 @Component({
@@ -57,16 +51,6 @@ import { CommonModule } from '@angular/common';
  template: `<router-outlet></router-outlet>`
 })
 export class AppComponent {
-// implements OnInit {
-//   user: any;
 
-//   constructor(private profileService: ProfileService) {}
-
-// ngOnInit() {
-//   this.profileService.getUserById(1).subscribe({
-//     next: (data) => this.user = data,
-//     error: (err) => console.error(err)
-//   });
-// }
 
 }

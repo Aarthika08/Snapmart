@@ -1,0 +1,41 @@
+<div class="checkout-card">
+  <h2>Snapmart Checkout</h2>
+
+  <div class="summary">
+    <h3>Product Summary</h3>
+    <div *ngFor="let item of cart" class="item-row">
+      <div>
+        <div class="name">{{ item.name }}</div>
+        <div class="qty">x{{ item.qty }}</div>
+      </div>
+      <div class="price">₹{{ (item.price || 0) * item.qty }}</div>
+    </div>
+    <hr/>
+    <div class="total">Total ({{ cart.length }} items): <strong>₹{{ totalAmount }}</strong></div>
+  </div>
+
+  <div class="payment-details">
+    <h3>Payment Details</h3>
+    <label>
+      Name
+      <input type="text" [(ngModel)]="name" placeholder="Full name" />
+    </label>
+    <label>
+      Email
+      <input type="email" [(ngModel)]="email" placeholder="email@example.com" />
+    </label>
+    <label>
+      Phone
+      <input type="tel" [(ngModel)]="phone" placeholder="+91xxxxxxxxxx" />
+    </label>
+
+    <div class="actions">
+      <button (click)="payNow()" [disabled]="loading" class="pay-btn">
+        <span *ngIf="!loading">Pay ₹{{ totalAmount }} Securely</span>
+        <span *ngIf="loading">Processing…</span>
+      </button>
+    </div>
+
+    <div *ngIf="error" class="error">{{ error }}</div>
+  </div>
+</div>
