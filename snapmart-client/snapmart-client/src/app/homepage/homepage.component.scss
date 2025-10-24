@@ -6,6 +6,46 @@ $card-bg: #fff;
 
 * { box-sizing: border-box; }
 
+
+
+/* ✅ New Buttons Section */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-btn {
+  background: transparent;
+  color: #333;
+  border: 1px solid #ddd;
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  border-color: #0078ff;
+  color: #0078ff;
+  background-color: rgba(0, 120, 255, 0.05);
+}
+
+.nav-btn.primary {
+  background-color: #0078ff;
+  color: #fff;
+  border: none;
+  box-shadow: 0 3px 6px rgba(0, 120, 255, 0.25);
+}
+
+.nav-btn.primary:hover {
+  background-color: #005fcc;
+  box-shadow: 0 4px 10px rgba(0, 120, 255, 0.3);
+}
+
+
 /* NAVBAR */
 .navbar {
   background: $dark;

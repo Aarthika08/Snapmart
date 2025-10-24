@@ -94,7 +94,7 @@ searchInput: any;
   viewProduct(product: any) {
     console.log('View product:', product);
     // 👉 later you can navigate to details page
-    // this.router.navigate(['/product', product.id]);
+    this.router.navigate(['/product', product.id]);
   }
 
   filterByCategory(category: string) {

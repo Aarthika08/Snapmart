@@ -72,3 +72,24 @@
     }
   }
 }
+/* ✅ Keeps the login text close to button */
+.login-link {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #555;
+  margin-top: 0.5rem;
+}
+
+.login-link a {
+  color: #0078ff;
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 5px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.login-link a:hover {
+  color: #005fcc;
+  text-decoration: underline;
+}

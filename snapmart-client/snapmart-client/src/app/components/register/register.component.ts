@@ -38,6 +38,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../auth.service';
 import { HttpClientModule ,HttpClient} from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -69,7 +70,7 @@ export class RegisterComponent {
 
 
 
-constructor(private http: HttpClient) {}
+constructor(private http: HttpClient,private router: Router) {}
 
 register() {
   const user = {
@@ -93,4 +94,7 @@ register() {
   });
 }
 
+  navigateTo(path: string) {
+    this.router.navigate([path]);
+  }
 }

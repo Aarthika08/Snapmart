@@ -12,6 +12,14 @@
         (keyup.enter)="onSearch($event.target.value)"/>
       <button (click)="onSearch(searchInput?.value)">Search</button>
     </div>
+       <nav class="nav-actions">
+      <button class="nav-btn" (click)="navigateTo('/product')">
+        Products
+      </button>
+      <button class="nav-btn primary" (click)="navigateTo('/register')">
+        Login / Signup
+      </button>
+    </nav>
 
     <div class="cart" aria-live="polite">
       <span class="material-icons" aria-hidden="true">shopping_cart</span>
